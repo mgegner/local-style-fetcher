@@ -7,10 +7,10 @@ var styleFetcher = styleFetcher || (function() {
 		updateLinkTagsOnStart: true,
 		reloadStyleTime: 2000,
 	};
+	var oldTimestamp = (new Date()).getTime();
+	var timeStamp = (new Date()).getTime();
 	
 	return {
-		oldTimestamp: (new Date()).getTime(),
-		timeStamp: (new Date()).getTime(),
 		
 		removeStyle: function() {
 			removeStyles = function(el) {
@@ -49,16 +49,6 @@ var styleFetcher = styleFetcher || (function() {
 			document.getElementsByTagName("head")[0].appendChild(newStyle);
 		},
 		
-		removeOldNewStyle: function() {
-			links = document.getElementsByTagName("head")[0].getElementsByTagName("link");
-			for(var i = 0; i < links.length; i++) {
-				if(links[i].nodeType == 1 && links[i].id == "newStyle-"+this.oldTimestamp) {
-					document.getElementsByTagName("head")[0].removeChild(links[i]);
-					i = 1000;
-				}
-			}
-		},
-		
 		reloadNewStyle: function() {
 			this.oldTimestamp = this.timeStamp;
 			this.timeStamp = (new Date()).getTime();
@@ -68,7 +58,15 @@ var styleFetcher = styleFetcher || (function() {
 			newStyle.id = "newStyle-" + this.timeStamp;
 			newStyle.href = _args.styleURL + "?time=" + this.timeStamp;
 			document.getElementsByTagName("head")[0].appendChild(newStyle);
-			setTimeout(this.removeOldNewStyle, 1000);
+			setTimeout(function() {
+				links = document.getElementsByTagName("head")[0].getElementsByTagName("link");
+				for(var i = 0; i < links.length; i++) {
+					if(links[i].nodeType == 1 && links[i].id == "newStyle-"+this.oldTimestamp) {
+						document.getElementsByTagName("head")[0].removeChild(links[i]);
+						i = 1000;
+					}
+				}
+			}, 1000);
 		},
 		
 		init: function(Args) {
