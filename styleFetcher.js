@@ -40,19 +40,19 @@ var styleFetcher = styleFetcher || (function() {
 					i++;
 				}
 			};
-			timeStamp = (new Date()).getTime();
+			this.timeStamp = (new Date()).getTime();
 			var newStyle = document.createElement("link");
 			newStyle.type = "text/css";
 			newStyle.rel = "stylesheet";
-			newStyle.id = "newStyle-"+timeStamp;
-			newStyle.href = _args.styleURL + "?time=" + timeStamp;
+			newStyle.id = "newStyle-"+this.timeStamp;
+			newStyle.href = _args.styleURL + "?time=" + this.timeStamp;
 			document.getElementsByTagName("head")[0].appendChild(newStyle);
 		},
 		
 		removeOldNewStyle: function() {
 			links = document.getElementsByTagName("head")[0].getElementsByTagName("link");
 			for(var i = 0; i < links.length; i++) {
-				if(links[i].nodeType == 1 && links[i].id == "newStyle-"+oldTimestamp) {
+				if(links[i].nodeType == 1 && links[i].id == "newStyle-"+this.oldTimestamp) {
 					document.getElementsByTagName("head")[0].removeChild(links[i]);
 					i = 1000;
 				}
@@ -60,13 +60,13 @@ var styleFetcher = styleFetcher || (function() {
 		},
 		
 		reloadNewStyle: function() {
-			oldTimestamp = timeStamp;
-			timeStamp = (new Date()).getTime();
+			this.oldTimestamp = this.timeStamp;
+			this.timeStamp = (new Date()).getTime();
 			var newStyle = document.createElement("link");
 			newStyle.type = "text/css";
 			newStyle.rel = "stylesheet";
-			newStyle.id = "newStyle-"+timeStamp;
-			newStyle.href = _args.styleURL + "?time=" + timeStamp;
+			newStyle.id = "newStyle-" + this.timeStamp;
+			newStyle.href = _args.styleURL + "?time=" + this.timeStamp;
 			document.getElementsByTagName("head")[0].appendChild(newStyle);
 			setTimeout(this.removeOldNewStyle, 1000);
 		},
