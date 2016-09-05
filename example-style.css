@@ -1,0 +1,15 @@
+/* 
+ * Example styles for the local-style-fetcher script:
+ * https://github.com/mgegner/local-style-fetcher
+ */
+
+body * {
+	transition: all 150ms ease-in-out;
+}
+
+body *:hover {
+	outline: 2px dotted #65A5D1;
+	cursor: help;
+}
+
+
